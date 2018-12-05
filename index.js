@@ -3,28 +3,38 @@ var inquirer = require("inquirer");
 var letter;
 var alphabet = "abcdefghijklmnopqrstuvwxyz"
 var count = 5;
-var wordArr = ["candycane", "gingerbread", "cookies", "ornament", "lights", "star", "christmas", "winter", "eggnog", "tinsel", "santa", "rudolph"]
+var wordArr = ["peppermint", "gingerbread", "cookies", "ornament", "lights", "star", "christmas", "winter", "eggnog", "tinsel", "santa", "rudolph",
+    "snowflake", "mistletoe", "holly", "fruitcake"]
+var randomWord;
 var letterNum;
 var wordShow;
-var randomWord = wordArr[Math.floor(Math.random() * (wordArr.length))];
-var array = randomWord.split("");
+var array;
 var guesses = [];
 var wrongGuesses = [];
 var lines = [];
 var guessesString;
-function displayLines() {
+function newWord() {
+    guessesString = "";
+    count = 5;
+    lines = [];
+    guesses = [];
+    wrongGuesses = [];
+    wordShow = "";
     console.log("\n ***************************");
     console.log("  * * CHRISTMAS HANGMAN * * ");
     console.log(" ***************************\n");
+    randomWord = wordArr[Math.floor(Math.random() * (wordArr.length))];
+    array = randomWord.split("");
     for (var i = 0; i < array.length; i++) {
         lines.push("_");
     }
+    
     wordShow = lines.join(" ");
     console.log("guesses: " + count);
     console.log("\n" + wordShow + "\n");
 }
 
-displayLines();
+newWord();
 
 var askLetter = function () {
     if (count > 0) {
@@ -36,7 +46,7 @@ var askLetter = function () {
             }
         ]).then(function (inquirerResponse) {
 
-            
+
             letter = inquirerResponse.letter;
 
             letterNum = array.indexOf(letter);
@@ -68,6 +78,9 @@ var askLetter = function () {
                     console.log("\n ***************************");
                     console.log("   * * * * YOU WIN * * * * ");
                     console.log(" ***************************\n");
+                    
+                    newWord();
+                    askLetter();
                 } else {
                     askLetter();
                 }
@@ -95,7 +108,7 @@ var askLetter = function () {
                     console.log("guesses: " + count)
                 }
                 console.log("\n" + wordShow + "\n")
-                
+
                 askLetter();
 
             } else {
