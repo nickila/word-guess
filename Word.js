@@ -1,14 +1,33 @@
 
-var Letter = require("Letter.js");
+var Letter = require("./Letter.js");
 
-var Word = function() {
-    
+var Word = function (word) {
+    this.word = word;
+    this.arrWord = [];
+    this.printWord = function () {
+        console.log(word);
+        for (i = 0; i < this.arrWord.length; i++) {
+            if (guessed) {
+                console.log("123 " + word)
+            }
+        }
+    }
+    this.letterCheck = function (letterToBeGuessed) {
+        console.log(arrWord);
+        for (i = 0; i < this.arrWord.length; i++) {
+            if (letterToBeGuessed === arrWord[i]) {
+                console.log(letterToBeGuessed);
+            } else {
+                console.log("_ ")
+            }
+        }
+    }
+
+
+    this.initArray = function (word) {
+        for (i = 0; i < word.length; i++) {
+            this.arrWord.push(new Letter(word[i], false))
+        }
+    }
 }
-// `Word.js` *should only* require `Letter.js`
-// * **Word.js**: Contains a constructor, Word that depends on the Letter constructor. This is used to create an object representing the current word the user is attempting to guess. That means the constructor should define:
-
-//   * An array of `new` Letter objects representing the letters of the underlying word
-
-//   * A function that returns a string representing the word. This should call the function on each letter object (the first function defined in `Letter.js`) that displays the character or an underscore and concatenate those together.
-
-//   * A function that takes a character as an argument and calls the guess function on each letter object (the second function defined in `Letter.js`)
+    module.exports = Word;

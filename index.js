@@ -1,5 +1,5 @@
 var inquirer = require("inquirer");
-
+var Word = require("./Word.js");
 var letter;
 var alphabet = "abcdefghijklmnopqrstuvwxyz"
 var count = 5;
@@ -13,28 +13,27 @@ var guesses = [];
 var wrongGuesses = [];
 var lines = [];
 var guessesString;
-function newWord() {
-    guessesString = "";
-    count = 5;
-    lines = [];
-    guesses = [];
-    wrongGuesses = [];
-    wordShow = "";
-    console.log("\n ***************************");
-    console.log("  * * CHRISTMAS HANGMAN * * ");
-    console.log(" ***************************\n");
-    randomWord = wordArr[Math.floor(Math.random() * (wordArr.length))];
-    array = randomWord.split("");
-    for (var i = 0; i < array.length; i++) {
-        lines.push("_");
-    }
-    
-    wordShow = lines.join(" ");
-    console.log("guesses: " + count);
-    console.log("\n" + wordShow + "\n");
-}
+var wins = 0;
+guessesString = "";
+count = 5;
+lines = [];
+guesses = [];
+wrongGuesses = [];
+wordShow = "";
+console.log("\n ***************************");
+console.log("  * * CHRISTMAS HANGMAN * * ");
+console.log(" ***************************\n");
+randomWord = wordArr[Math.floor(Math.random() * (wordArr.length))];
+var word = new Word(randomWord);
+//console.log(word.guess(letter));
+wordShow = lines.join(" ");
+console.log("wins: " + wins);
+console.log("guesses: " + count);
+console.log("\n" + wordShow + "\n");
+word.printWord();
 
-newWord();
+
+//newWord();
 
 var askLetter = function () {
     if (count > 0) {
@@ -45,7 +44,8 @@ var askLetter = function () {
                 name: "letter"
             }
         ]).then(function (inquirerResponse) {
-
+            console.log(inquirerResponse);
+word.printWord();
 
             letter = inquirerResponse.letter;
 
@@ -58,6 +58,7 @@ var askLetter = function () {
             else if (array.includes(letter) && !guesses.includes(letter)) {
                 guesses.push(letter);
                 //guessesString = guesses.join(" ");
+                console.log("wins: " + wins);
                 if (guessesString && guessesString.length) {
                     console.log("guesses: " + count + " [" + guessesString + "]");
                 } else {
@@ -78,7 +79,7 @@ var askLetter = function () {
                     console.log("\n ***************************");
                     console.log("   * * * * YOU WIN * * * * ");
                     console.log(" ***************************\n");
-                    
+                    wins++
                     newWord();
                     askLetter();
                 } else {
@@ -87,8 +88,9 @@ var askLetter = function () {
 
             } else if (guesses.includes(letter)) {
                 console.log("Letter already chosen. Please choose a new letter.");
-                // wordShow = lines.join(" ")
+                console.log("wins: " + wins);
                 if (guessesString && guessesString.length) {
+
                     console.log("guesses: " + count + " [" + guessesString + "]");
                 } else {
                     console.log("guesses: " + count)
@@ -102,6 +104,7 @@ var askLetter = function () {
                 wrongGuesses.push(letter);
                 guessesString = wrongGuesses.join(" ");
                 wordShow = lines.join(" ")
+                console.log("wins: " + wins);
                 if (guessesString && guessesString.length) {
                     console.log("guesses: " + count + " [" + guessesString + "]");
                 } else {
@@ -112,14 +115,19 @@ var askLetter = function () {
                 askLetter();
 
             } else {
-                console.log("\noops! something broke...\n");
+                console.log("\nOops! Something broke...\n");
             }
 
             if (count === 0) {
-                console.log(" * The word was: " + randomWord + " *")
+
                 console.log("\n ***************************");
                 console.log("  * * * * GAME OVER * * * *");
                 console.log(" ***************************\n");
+                console.log(" * The word was: " + randomWord + " *");
+                console.log("You correctly guessed " + wins + " words.");
+                wins = 0;
+                newWord();
+                askLetter();
             }
 
 
