@@ -8,8 +8,7 @@ var Word = function (word) {
     this.usedArr = [];
     this.usedStr = "";
     this.count = 5;
-    this.wordCheck1;
-    this.wordCheck2;
+    
     //this.correctLetters=0;
 
     this.letterCheck = function (userLetter) {
@@ -30,20 +29,20 @@ var Word = function (word) {
         if (correctLetters == 0) {
             this.count--
 
-            console.log("Guesses: " + this.count);
+            //console.log("Guesses: " + this.count);
             
         } else {
             
-            console.log("Guesses: " + this.count);
+            //console.log("Guesses: " + this.count + );
             correctLetters = 0;
         }
          if (!this.usedArr.includes(userLetter)) {
         this.usedArr.push(userLetter);
         this.usedStr = this.usedArr.join(" ");
-        console.log(this.usedStr);
+        console.log("Letter Box: [" + this.usedStr + "]\n");
          } else {
              console.log("Please choose one new letter.");
-             console.log(this.usedStr);
+             console.log("Letter Box: [" + this.usedStr + "]\n");
          }
 
         
@@ -68,14 +67,7 @@ var Word = function (word) {
         
 
         this.str = this.newArr.join(" ");
-        console.log(this.str)
-        this.wordCheck1 = this.str;
-        // if (!this.str.includes("_")) {
-        //     console.log("\n ***************************");
-        //     console.log("   * * * * YOU WIN * * * * ");
-        //     console.log(" ***************************\n");
-            
-        
+        console.log(this.str + "\n");
     }
 }
 
