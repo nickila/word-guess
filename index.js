@@ -2,16 +2,21 @@ var Word = require("./Word.js");
 var inquirer = require("inquirer")
 var wordList = ["peppermint", "gingerbread", "cookies", "ornament", "lights", "star", "christmas", "winter", "eggnog", "tinsel", "santa", "rudolph",
     "snowflake", "mistletoe", "holly", "fruitcake"]
-var gameWord = wordList[Math.floor(Math.random() * (wordList.length))];
-var playWord = new Word(gameWord);
-var count = 5;
-console.log("\n ***************************");
-console.log("  * * CHRISTMAS HANGMAN * * ");
-console.log(" ***************************\n");
+var gameWord;
+var playWord;
+function newWord() {
+    gameWord = wordList[Math.floor(Math.random() * (wordList.length))];
+    playWord = new Word(gameWord);
+    console.log("\n ***************************");
+    console.log("  * * CHRISTMAS HANGMAN * * ");
+    console.log(" ***************************\n");
+    console.log("Guesses: " + playWord.count + "\n")
+}
+newWord();
 
 playWord.initArray(gameWord);
 function askLetter() {
-    if (count > 0) {
+    if (playWord.count > 0) {
         inquirer.prompt([
             {
                 type: "input",
@@ -19,16 +24,30 @@ function askLetter() {
                 name: "letter"
             }
         ]).then(function (inquirerResponse) {
+
             var userLetter = inquirerResponse.letter;
-            console.log("guesses: " + count);
-            playWord.letterCheck(userLetter)
+            //console.log("Guesses: " + playWord.count);
+            playWord.letterCheck(userLetter);
+            console.log("Guesses: " + playWord.count);
             playWord.initArray(gameWord);
+
             askLetter();
         });
     } else {
-        console.log("")
+        console.log(" * The word was: " + gameWord + " *")
+        console.log("\n ***************************");
+        console.log("  * * * * GAME OVER * * * *");
+        console.log(" ***************************\n");
+    }
+    if (!playWord.str.includes("_")) {
+        console.log("\n ***************************");
+        console.log("   * * * * YOU WIN * * * * ");
+        console.log(" ***************************\n");
+        newWord();
+        playWord.initArray(gameWord);
     }
 }
+//}
 askLetter();
 
 // word.printWord();
